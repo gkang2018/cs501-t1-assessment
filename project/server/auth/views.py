@@ -38,7 +38,7 @@ class RegisterAPI(MethodView):
                 responseObject = {
                     'status': 'success',
                     'message': 'Successfully registered.',
-                    'auth_token': auth_token.decode()
+                    'auth_token': user.decode_auth_token(auth_token)
                 }
                 return make_response(jsonify(responseObject)), 201
             except Exception as e:
@@ -55,12 +55,28 @@ class RegisterAPI(MethodView):
             return make_response(jsonify(responseObject)), 202
 
 
+class UserAPI(MethodView): 
+    """
+    User Information Resource
+    """
+
+    def get(self): 
+        users = User.query.filter().all()
+        cleaned_users = [{"id": user.id, "admin": user.admin, "email": user.email, "registered_on": user.registered_on} for user in users ]
+        return make_response(jsonify(cleaned_users)), 201
+
 # define the API resources
 registration_view = RegisterAPI.as_view('register_api')
-
+user_view = UserAPI.as_view('user_api')
 # add Rules for API Endpoints
 auth_blueprint.add_url_rule(
     '/auth/register',
     view_func=registration_view,
     methods=['POST', 'GET']
+)
+
+auth_blueprint.add_url_rule(
+    '/auth/index',
+    view_func=user_view,
+    methods=['GET']
 )

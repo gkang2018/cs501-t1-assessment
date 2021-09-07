@@ -16,6 +16,7 @@ class DevelopmentConfig(BaseConfig):
     """Development configuration."""
     DEBUG = True
     BCRYPT_LOG_ROUNDS = 4
+    SECRET_KEY = os.getenv('SECRET_KEY', 'diagnostic_secret')
     SQLALCHEMY_DATABASE_URI = postgres_local_base + database_name
 
 
