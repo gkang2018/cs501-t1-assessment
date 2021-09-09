@@ -76,7 +76,7 @@ auth_blueprint.add_url_rule(
 )
 
 auth_blueprint.add_url_rule(
-    '/auth/index',
+    '/users/index',
     view_func=user_view,
     methods=['GET']
 )
